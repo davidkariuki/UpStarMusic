@@ -1,33 +1,33 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import Paginator from './Paginator';
-import * as actions from '../../actions';
+import _ from "lodash"
+import React, { Component } from "react"
+import { Link } from "react-router"
+import { connect } from "react-redux"
+import Paginator from "./Paginator"
+import * as actions from "../../actions"
 
 class ArtistIndex extends Component {
-  onChange(_id) {
-    if (_.contains(this.props.selection, _id)) {
-      this.props.deselectArtist(_id);
+  onChange(id) {
+    if (_.contains(this.props.selection, id)) {
+      this.props.deselectArtist(id)
     } else {
-      this.props.selectArtist(_id);
+      this.props.selectArtist(id)
     }
   }
 
   renderList(artist) {
-    const { _id } = artist;
-    const classes = `collection-item avatar ${artist.retired && 'retired'}`;
+    const { id } = artist
+    const classes = `collection-item avatar ${artist.retired && "retired"}`
 
     return (
-      <li className={classes} key={_id}>
+      <li className={classes} key={id}>
         <div>
           <input
-            id={_id}
+            id={id}
             type="checkbox"
-            checked={_.contains(this.props.selection, _id)}
-            onChange={() => this.onChange(_id)}
+            checked={_.contains(this.props.selection, id)}
+            onChange={() => this.onChange(id)}
           />
-          <label htmlFor={_id} />
+          <label htmlFor={id} />
         </div>
         <img src={artist.image} className="circle" />
         <div>
@@ -38,30 +38,34 @@ class ArtistIndex extends Component {
             <b>{artist.age}</b> years old
             <br />
             {artist.albums ? artist.albums.length : 0} albums released
+            <br />
+            {artist.yearsActive ? artist.yearsActive : 0} years active
           </p>
         </div>
-        <Link to={`artists/${artist._id}`} className="secondary-content">
-           <i className="material-icons">play_arrow</i>
-         </Link>
+        <Link to={`artists/${artist.id}`} className="secondary-content">
+          <i className="material-icons">play_arrow</i>
+        </Link>
       </li>
-    );
+    )
   }
 
   renderPaginator() {
     if (this.props.artists.all.length) {
-      return <Paginator />;
+      return <Paginator />
     }
   }
 
   renderEmptyCollection() {
-    if (this.props.artists.all.length) { return; }
+    if (this.props.artists.all.length) {
+      return
+    }
 
     return (
       <div className="center-align">
         <h5>No records found!</h5>
         <div>Try searching again</div>
       </div>
-    );
+    )
   }
 
   renderRetire() {
@@ -81,7 +85,7 @@ class ArtistIndex extends Component {
             Unretire
           </button>
         </div>
-      );
+      )
     }
   }
 
@@ -96,10 +100,10 @@ class ArtistIndex extends Component {
 
         {this.renderPaginator()}
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = ({ artists, selection }) => ({ artists, selection });
+const mapStateToProps = ({ artists, selection }) => ({ artists, selection })
 
-export default connect(mapStateToProps, actions)(ArtistIndex);
+export default connect(mapStateToProps, actions)(ArtistIndex)

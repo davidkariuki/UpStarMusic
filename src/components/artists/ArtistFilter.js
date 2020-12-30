@@ -1,42 +1,40 @@
-import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
-import { Range } from '../filters';
-import * as actions from '../../actions';
+import React, { Component } from "react"
+import { Field, reduxForm } from "redux-form"
+import { connect } from "react-redux"
+import { Range } from "../filters"
+import * as actions from "../../actions"
 
-const TEXT_FIELDS = [
-  { label: 'Name', prop: 'name' }
-];
+const TEXT_FIELDS = [{ label: "Name", prop: "name" }]
 
 class ArtistFilter extends Component {
   componentWillMount() {
     if (this.props.filters) {
       this.props.searchArtists({
-        name: '',
-        ...this.props.filters
-      });
+        name: "",
+        ...this.props.filters,
+      })
     } else {
       this.props.searchArtists({
-        name: '',
-        sort: 'name'
-      });
+        name: "",
+        sort: "name",
+      })
     }
   }
 
   componentDidMount() {
-    this.props.setAgeRange();
-    this.props.setYearsActiveRange();
+    this.props.setAgeRange()
+    this.props.setYearsActiveRange()
   }
 
   handleSubmit(formProps) {
     this.props.searchArtists({
-      name: '',
-      ...formProps
-    });
+      name: "",
+      ...formProps,
+    })
   }
 
   renderInputs() {
-    return TEXT_FIELDS.map(({ label, prop }) =>
+    return TEXT_FIELDS.map(({ label, prop }) => (
       <div className="input-field" key={prop}>
         <Field
           placeholder={label}
@@ -46,19 +44,17 @@ class ArtistFilter extends Component {
           type="text"
         />
       </div>
-    );
+    ))
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit } = this.props
 
     return (
       <div className="card blue-grey darken-1 row">
         <div className="card-content white-text">
           <form onSubmit={handleSubmit(this.handleSubmit.bind(this))}>
-            <div className="center-align card-title">
-              Search
-            </div>
+            <div className="center-align card-title">Search</div>
 
             {this.renderInputs()}
 
@@ -85,7 +81,9 @@ class ArtistFilter extends Component {
             </div>
 
             <div>
-              <label className="select" htmlFor="sort">Sort By</label>
+              <label className="select" htmlFor="sort">
+                Sort By
+              </label>
               <Field id="sort" name="sort" component="select">
                 <option value="name">Name</option>
                 <option value="age">Age</option>
@@ -99,22 +97,27 @@ class ArtistFilter extends Component {
           </form>
         </div>
       </div>
-    );
+    )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { filterCriteria } = state;
+  const { filterCriteria } = state
 
   return {
     yearsActive: filterCriteria.yearsActive,
     ageRange: filterCriteria.age,
-    filters: state.form.filters && state.form.filters.values
-  };
-};
+    filters: state.form.filters && state.form.filters.values,
+  }
+}
 
-export default connect(mapStateToProps, actions)(reduxForm({
-  destroyOnUnmount: false,
-  form: 'filters',
-  initialValues: { sort: 'name' }
-})(ArtistFilter));
+export default connect(
+  mapStateToProps,
+  actions
+)(
+  reduxForm({
+    destroyOnUnmount: false,
+    form: "filters",
+    initialValues: { sort: "name" },
+  })(ArtistFilter)
+)
